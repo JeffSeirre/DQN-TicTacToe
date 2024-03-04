@@ -1,4 +1,4 @@
-# A DQN agent learning to play TicTacToe.
+# Reinforcement Learning - A DQN agent learning to play TicTacToe.
 The game environment is custom built and used to train the neural network against random moves. The network learns about legal moves (can't play in occupied fields), then improves on strategy.
 
 # Next steps
