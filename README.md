@@ -1,7 +1,7 @@
 # Reinforcement Learning - A DQN agent learning to play TicTacToe.
-The game environment is custom built and used to train the neural network against random moves. The network learns about legal moves (can't play in occupied fields), then improves on strategy.
+The game environment is custom built and used to train the neural network against random moves. The network first learns about legal moves (e.g. you can't play in occupied fields), then improves on strategy.
 
-# Play agains the trained neural network!
+# Play against the trained neural network!
 You can play a game against the NN at https://tictactoe-ai.streamlit.app/
 
 # Next steps
