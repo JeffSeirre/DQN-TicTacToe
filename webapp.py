@@ -17,6 +17,37 @@ def opponent_play():
     else:
         return choose_random()
     
+def eval_board():
+    rows = np.array(np.vsplit(np.transpose(st.session_state.board), 3))[:,0,:]
+    columns = np.array(np.vsplit(st.session_state.board, 3))[:,0,:]
+    diagonals = np.array([[st.session_state.board[0,0],st.session_state.board[1,1],st.session_state.board[2,2]], 
+                          [st.session_state.board[0,2],st.session_state.board[1,1],st.session_state.board[2,0]]])
+    lines = np.vstack([rows,columns,diagonals])
+    for line in lines:
+        if np.all(line == line[0]) and line[0] != 0:
+            if line[0] == 1:
+                return 'win_1'
+            else:
+                return 'win_-1'
+    if not np.any(st.session_state.board == 0):
+        return 'draw'
+    return 'undecided'
+
+def terminated():
+    match eval_board():
+        case 'win_-1':
+            st.session_state.message = 'You won! Click below to restart'
+            st.session_state.terminated =  True
+        case 'win_1':
+            st.session_state.message = 'You lost! Click below to restart'
+            st.session_state.terminated =  True
+        case 'draw':
+            st.session_state.message = 'You made a draw! Click below to restart'
+            st.session_state.terminated =  True
+        case 'undecided':
+            st.session_state.terminated =  False
+    return st.session_state.terminated
+
 def clicked(x=0, y=0):
     if (st.session_state.board[x, y] != 0) or (st.session_state.terminated):
         return
@@ -36,43 +67,11 @@ def clicked(x=0, y=0):
     terminated()
     return
 
-def terminated():
-    match eval_board():
-        case 'win_-1':
-            st.session_state.message = 'You won! Click below to restart'
-            st.session_state.terminated =  True
-        case 'win_1':
-            st.session_state.message = 'You lost! Click below to restart'
-            st.session_state.terminated =  True
-        case 'draw':
-            st.session_state.message = 'You made a draw! Click below to restart'
-            st.session_state.terminated =  True
-        case 'undecided':
-            st.session_state.terminated =  False
-    return st.session_state.terminated
-
 def reset():
     st.session_state.grid = np.full((rows, cols), "__")
     st.session_state.board = np.zeros((rows, cols))
     st.session_state.message = "Click the empty fields below to place your symbol X."
     st.session_state.terminated = False
-
-
-def eval_board():
-    rows = np.array(np.vsplit(np.transpose(st.session_state.board), 3))[:,0,:]
-    columns = np.array(np.vsplit(st.session_state.board, 3))[:,0,:]
-    diagonals = np.array([[st.session_state.board[0,0],st.session_state.board[1,1],st.session_state.board[2,2]], 
-                          [st.session_state.board[0,2],st.session_state.board[1,1],st.session_state.board[2,0]]])
-    lines = np.vstack([rows,columns,diagonals])
-    for line in lines:
-        if np.all(line == line[0]) and line[0] != 0:
-            if line[0] == 1:
-                return 'win_1'
-            else:
-                return 'win_-1'
-    if not np.any(st.session_state.board == 0):
-        return 'draw'
-    return 'undecided'
 
 
 # Initialize board state, neural network, symbol grid, and displayed message if they don't exist
