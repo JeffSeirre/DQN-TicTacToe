@@ -33,20 +33,36 @@ def eval_board():
         return 'draw'
     return 'undecided'
 
+# def terminated():
+#     match eval_board():
+#         case 'win_-1':
+#             st.session_state.message = 'You won! Click below to restart'
+#             st.session_state.terminated =  True
+#         case 'win_1':
+#             st.session_state.message = 'You lost! Click below to restart'
+#             st.session_state.terminated =  True
+#         case 'draw':
+#             st.session_state.message = 'You made a draw! Click below to restart'
+#             st.session_state.terminated =  True
+#         case 'undecided':
+#             st.session_state.terminated =  False
+#     return st.session_state.terminated
+
 def terminated():
-    match eval_board():
-        case 'win_-1':
-            st.session_state.message = 'You won! Click below to restart'
-            st.session_state.terminated =  True
-        case 'win_1':
-            st.session_state.message = 'You lost! Click below to restart'
-            st.session_state.terminated =  True
-        case 'draw':
-            st.session_state.message = 'You made a draw! Click below to restart'
-            st.session_state.terminated =  True
-        case 'undecided':
-            st.session_state.terminated =  False
+    result = eval_board()
+    if result == 'win_-1':
+        st.session_state.message = 'You won! Click below to restart'
+        st.session_state.terminated = True
+    elif result == 'win_1':
+        st.session_state.message = 'You lost! Click below to restart'
+        st.session_state.terminated = True
+    elif result == 'draw':
+        st.session_state.message = 'You made a draw! Click below to restart'
+        st.session_state.terminated = True
+    elif result == 'undecided':
+        st.session_state.terminated = False
     return st.session_state.terminated
+
 
 def clicked(x=0, y=0):
     if (st.session_state.board[x, y] != 0) or (st.session_state.terminated):
