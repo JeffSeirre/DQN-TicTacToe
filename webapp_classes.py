@@ -25,23 +25,23 @@ class Q_net(nn.Module):
     
     
 class Game_agent:
-    def __init__(self, obs_size, n_actions, symbol, loadFile):
+    def __init__(self, obs_size, n_actions, size, symbol, loadFile):
 
         self.symbol = symbol
-
+        self.size = size
         # Save the number of actions and the observation size
         self.n_actions = n_actions
         self.obs_size = obs_size
 
         # Define the value network for the agent.
-        self.value_network = Q_net(9,9)
+        self.value_network = Q_net(obs_size, n_actions)
         self.value_network.load_state_dict(torch.load(loadFile))
 
     def play(self, observation):
         input = torch.tensor(observation, dtype=torch.float32)
         action_values = self.value_network(input)
         action = action_values.argmax().item()
-        row = action // 3
-        col = action % 3
+        row = action // self.size
+        col = action % self.size
         return row, col
 
