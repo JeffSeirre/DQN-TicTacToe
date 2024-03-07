@@ -5,4 +5,5 @@ The game environment is custom built and used to train the neural network agains
 You can play a game against the NN at https://tictactoe-ai.streamlit.app/
 
 # Next steps
+Add other opponents trained by an Advantage A2C method.
 Build an extension to NxN playing fields with a winning condition of M symbols in a row for arbitrary N, M.
